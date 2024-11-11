@@ -4,6 +4,7 @@ import (
 	"cast/config"
 	"cast/internal/api/socket"
 	"cast/internal/api/sse"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,7 +40,8 @@ func InitHandler(c *gin.Context) {
 	config.LiveId = body.LiveId
 	config.Url = body.Url
 	config.PlatFrom = body.Plat
-	socket.ConnectWebSocket("ws://124.222.224.186:8800")
+	fmt.Println(config.GetDouyinSocketUrl())
+	socket.ConnectWebSocket(config.GetDouyinSocketUrl())
 	socket.SendMessage("hello")
 	c.JSON(200, Response{
 		Code: 1,
