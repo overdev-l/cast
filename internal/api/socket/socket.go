@@ -1,6 +1,7 @@
 package socket
 
 import (
+	"cast/internal/api/sse"
 	"fmt"
 	"log"
 	"sync"
@@ -62,6 +63,7 @@ func handleMessages() {
 // handleReceivedMessage 处理收到的消息
 func handleReceivedMessage(message []byte) {
 	// 这里处理接收到的消息
+	sse.SendSSEMessage(string(message))
 	log.Printf("Received message: %s", string(message))
 }
 
@@ -87,4 +89,10 @@ func IsConnected() bool {
 	connMutex.Lock()
 	defer connMutex.Unlock()
 	return isActive
+}
+
+func SendMessage(message string) {
+	connMutex.Lock()
+	defer connMutex.Unlock()
+	conn.WriteMessage(websocket.TextMessage, []byte(message))
 }
