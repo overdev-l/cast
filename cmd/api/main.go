@@ -2,8 +2,10 @@ package main
 
 import (
 	"cast/internal/api/handler"
-	"github.com/gin-gonic/gin"
+	"cast/internal/api/sse"
 	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -17,6 +19,7 @@ func main() {
 func registerRoutes(r *gin.Engine) {
 	v1 := r.Group("/api/v1")
 	v1.POST("/init", handler.InitHandler)
-	v1.GET("/events", handler.SSEHandler)
+	v1.GET("/events", sse.SSEHandler)
 	v1.POST("/stop", handler.StopHandler)
+	v1.POST("/send", handler.SendMessage)
 }
